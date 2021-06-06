@@ -65,8 +65,8 @@ function App() {
     useEffect( () => {
         async function getRequestData(){
             let {data} = await axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`)
-           const coins = data.Data.map((coin: any) => {
-             const obj = {
+           const coins:CoinsType[] = data.Data.map((coin: any) => {
+             const obj: CoinsType = {
                  name: coin.CoinInfo.Name,
                  fullName: coin.CoinInfo.FullName,
                  imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
@@ -91,10 +91,10 @@ function App() {
                           <TableHead>
                               <TableRow>
                                   <TableCell></TableCell>
-                                  <TableCell align="left">FullName</TableCell>
-                                  <TableCell align="left">Name</TableCell>
-                                  <TableCell align="left">Price</TableCell>
-                                  <TableCell align="left">Volume24hour</TableCell>
+                                  <TableCell align="left"><b>Name</b></TableCell>
+                                  <TableCell align="left"><b>FullName</b></TableCell>
+                                  <TableCell align="left"><b>Price</b></TableCell>
+                                  <TableCell align="left"><b>Volume24hour</b></TableCell>
                               </TableRow>
                           </TableHead>
                           <TableBody>
