@@ -46,6 +46,11 @@ const useStyles = makeStyles((theme: Theme) =>
         table: {
             minWidth: 580,
         },
+        icon: {
+            width: 25,
+            height: 25,
+            borderRadius: 30,
+        }
     }),
 );
 
@@ -70,8 +75,8 @@ function App() {
                  name: coin.CoinInfo.Name,
                  fullName: coin.CoinInfo.FullName,
                  imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
-                 price: coin.RAW.USD.PRICE,
-                 volume24Hour: coin.RAW.USD.VOLUME24HOUR,
+                 price: coin.RAW.USD.PRICE.toFixed(2),
+                 volume24Hour: parseInt(coin.RAW.USD.VOLUME24HOUR),
              }
              return obj
            })
@@ -101,12 +106,12 @@ function App() {
                               {allCoins?.map((coin) => (
                                   <TableRow key={coin.name}>
                                       <TableCell component="th" scope="row">
-                                          <img style={{width: 30}} src={coin.imageUrl} alt={"try again later"}/>
+                                          <img className={classes.icon} src={coin.imageUrl} alt={"try again later"}/>
                                       </TableCell>
                                       <TableCell align="left">{coin.name}</TableCell>
                                       <TableCell align="left">{coin.fullName}</TableCell>
-                                      <TableCell align="left">{coin.price}</TableCell>
-                                      <TableCell align="left">{coin.volume24Hour}</TableCell>
+                                      <TableCell align="left">${coin.price}</TableCell>
+                                      <TableCell align="left">${coin.volume24Hour}</TableCell>
                                   </TableRow>
                               ))}
                           </TableBody>
