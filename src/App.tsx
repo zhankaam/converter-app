@@ -67,12 +67,13 @@ function App() {
             let {data} = await axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`)
            const coins = data.Data.map((coin: any) => {
              const obj = {
-                 name: coin.coinInfo.Name,
-                 fullName: coin.coinInfo.FullName,
-                 imageUrl: coin.coinInfo.ImageUrl,
+                 name: coin.CoinInfo.Name,
+                 fullName: coin.CoinInfo.FullName,
+                 imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
                  price: coin.RAW.USD.PRICE,
                  volume24Hour: coin.RAW.USD.VOLUME24HOUR,
              }
+             return obj
            })
             setAllCoins(coins)
         }
@@ -93,14 +94,14 @@ function App() {
                                   <TableCell align="left">FullName</TableCell>
                                   <TableCell align="left">Name</TableCell>
                                   <TableCell align="left">Price</TableCell>
-                                  <TableCell align="left">volume24hour</TableCell>
+                                  <TableCell align="left">Volume24hour</TableCell>
                               </TableRow>
                           </TableHead>
                           <TableBody>
                               {allCoins?.map((coin) => (
                                   <TableRow key={coin.name}>
                                       <TableCell component="th" scope="row">
-                                          {coin.imageUrl}
+                                          <img style={{width: 30}} src={coin.imageUrl} alt={"try again later"}/>
                                       </TableCell>
                                       <TableCell align="left">{coin.name}</TableCell>
                                       <TableCell align="left">{coin.fullName}</TableCell>
