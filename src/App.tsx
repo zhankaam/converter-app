@@ -1,25 +1,73 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+    Container,
+    createStyles,
+    FormControl,
+    Grid, InputLabel,
+    makeStyles,
+    MenuItem,
+    Paper,
+    Select,
+    TextField,
+    Theme
+} from "@material-ui/core";
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+           padding:theme.spacing(10)
+        },
+        paper: {
+            padding: theme.spacing(2),
+            textAlign: 'center',
+            color: theme.palette.text.secondary
+        },
+        cryptoInputBox:{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+        },
+        currencyInput: {
+            minWidth: 'calc(70% - 10px)',
+            marginRight: 10
+        },
+        currencyType: {
+            minWidth: '30%',
+        }
+    }),
+);
+
 
 function App() {
+    const classes = useStyles();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <Container maxWidth="lg" className={classes.root}>
+      <Grid container spacing={3}>
+          <Grid item xs={8}>
+              <Paper className={classes.paper}>xs=12</Paper>
+          </Grid>
+          <Grid item xs={4}>
+              <Paper className={classes.paper}>
+                  <div className={classes.cryptoInputBox}>
+                      <FormControl className={classes.currencyInput} >
+                          <TextField label="Сумма" />
+                      </FormControl>
+                      <FormControl  className={classes.currencyType} >
+                          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+                              Валюта
+                          </InputLabel>
+                          <Select value={10} >
+                              <MenuItem value={10}>Ten</MenuItem>
+                              <MenuItem value={20}>Twenty</MenuItem>
+                              <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                      </FormControl>
+                  </div>
+              </Paper>
+          </Grid>
+      </Grid>
+  </Container>
   );
 }
 
