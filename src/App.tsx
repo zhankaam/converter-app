@@ -3,21 +3,18 @@ import {
     Container,
     createStyles,
     FormControl,
-    Grid, InputLabel,
+    Grid,
+    InputLabel,
     makeStyles,
     MenuItem,
     Paper,
     Select,
     TextField,
-    Theme, Typography
+    Theme,
+    Typography
 } from "@material-ui/core";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import axios from "axios";
+import {CryptoTable} from "./components/cryptoTable/CryptoTable";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -42,20 +39,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         currencyType: {
             minWidth: '30%',
-        },
-        table: {
-            minWidth: 580,
-        },
-        icon: {
-            width: 25,
-            height: 25,
-            borderRadius: 30,
         }
     }),
 );
 
 
-type CoinsType = {
+export type CoinsType = {
     name: string
     fullName: string
     imageUrl: string
@@ -63,7 +52,7 @@ type CoinsType = {
     volume24Hour: number
 }
 
-function App() {
+export function App() {
     const classes = useStyles();
     const [allCoins, setAllCoins] = useState<CoinsType[]>([]);
 
@@ -91,34 +80,7 @@ function App() {
         <Container maxWidth="lg" className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={8}>
-                    <TableContainer component={Paper}>
-                        <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell align="left"><b>Name</b></TableCell>
-                                    <TableCell align="left"><b>FullName</b></TableCell>
-                                    <TableCell align="left"><b>Price</b></TableCell>
-                                    <TableCell align="left"><b>Volume24hour</b></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {!allCoins.length
-                                    ? 'Loading...'
-                                    : allCoins?.map((coin) => (
-                                        <TableRow key={coin.name}>
-                                            <TableCell component="th" scope="row">
-                                                <img className={classes.icon} src={coin.imageUrl} alt={"try again later"}/>
-                                            </TableCell>
-                                            <TableCell align="left">{coin.name}</TableCell>
-                                            <TableCell align="left">{coin.fullName}</TableCell>
-                                            <TableCell align="left">${coin.price}</TableCell>
-                                            <TableCell align="left">${coin.volume24Hour}</TableCell>
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <CryptoTable allCoins={allCoins}/>
                 </Grid>
                 <Grid item xs={4}>
                     <Paper className={classes.paper}>
@@ -162,4 +124,3 @@ function App() {
     );
 }
 
-export default App;
