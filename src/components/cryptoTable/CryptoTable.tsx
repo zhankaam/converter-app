@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Paper} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -7,31 +7,20 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import {CoinsType} from "../../types/types";
-import axios from "axios";
+import {inject, observer} from "mobx-react";
+import {CurrenciesStore} from "../../store-mobX/currencies-store";
 
-export const CryptoTable = ({classes}: {classes: any }) => {
+export const CryptoTable = inject('currenciesStore')(observer(({classes,currenciesStore}: {classes: any,currenciesStore?: CurrenciesStore }) => {
 
-    const [allCoins, setAllCoins] = useState<CoinsType[]>([]);
+    const allCoins:CoinsType[] = currenciesStore!.getAllCoins;
 
     useEffect(() => {
-        async function getRequestData() {
-            let {data} = await axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`)
-            const coins: CoinsType[] = data.Data.map((coin: any) => {
-                const obj: CoinsType = {
-                    name: coin.CoinInfo.Name,
-                    fullName: coin.CoinInfo.FullName,
-                    imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
-                    price: coin.RAW.USD.PRICE.toFixed(2),
-                    volume24Hour: parseInt(coin.RAW.USD.VOLUME24HOUR),
-                }
-                return obj
-            })
-            setAllCoins(coins)
+        if(currenciesStore){
+            currenciesStore?.fetchAllCoins()
         }
+    },[])
 
-        getRequestData()
-    }, [])
-
+    console.log(allCoins)
     return (
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
@@ -62,4 +51,4 @@ export const CryptoTable = ({classes}: {classes: any }) => {
             </Table>
         </TableContainer>
     );
-};
+}));

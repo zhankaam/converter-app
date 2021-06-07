@@ -1,7 +1,12 @@
 import React from 'react';
 import {FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography} from "@material-ui/core";
+import {inject, observer} from "mobx-react";
+import {ConverterStore} from "../../store-mobX/converter-store";
+import {CurrenciesStore} from "../../store-mobX/currencies-store";
 
-export const ConventerBlock = ({classes}: { classes: any }) => {
+export const ConventerBlock = inject('currenciesStore','converterStore')(observer(({classes,currenciesStore,converterStore}: { classes: any ,currenciesStore?:CurrenciesStore ,converterStore?: ConverterStore}) => {
+    const coins: string[] = currenciesStore!.getAllCoins.map(coin => coin.name)
+
     return (
         <Paper className={classes.paper}>
             <div className={classes.cryptoInputBox}>
@@ -12,10 +17,8 @@ export const ConventerBlock = ({classes}: { classes: any }) => {
                     <InputLabel shrink id="demo-simple-select-placeholder-label-label">
                         Валюта
                     </InputLabel>
-                    <Select value={10}>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                    <Select value={coins[0]}>
+                        {coins.map(name => (<MenuItem value={name}>{name}</MenuItem>))}
                     </Select>
                 </FormControl>
             </div>
@@ -27,10 +30,8 @@ export const ConventerBlock = ({classes}: { classes: any }) => {
                     <InputLabel shrink id="demo-simple-select-placeholder-label-label">
                         Валюта
                     </InputLabel>
-                    <Select value={10}>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                    <Select value={coins[0]}>
+                        {coins.map(name => (<MenuItem value={name}>{name}</MenuItem>))}
                     </Select>
                 </FormControl>
             </div>
@@ -39,4 +40,4 @@ export const ConventerBlock = ({classes}: { classes: any }) => {
             </Typography>
         </Paper>
     );
-};
+}));

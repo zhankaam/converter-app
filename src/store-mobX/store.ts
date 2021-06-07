@@ -1,4 +1,4 @@
-import {CurrenciesStore} from './cryproCurrencies-store'
+import {CurrenciesStore} from './currencies-store'
 import {ConverterStore} from './converter-store'
 
 
