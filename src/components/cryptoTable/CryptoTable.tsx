@@ -1,28 +1,15 @@
 import React from 'react';
-import {createStyles, makeStyles, Paper} from "@material-ui/core";
+import {Paper} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
-import {CoinsType} from "../../App";
+import {CoinsType} from "../types/types";
 
-const useStyles = makeStyles(() =>
-    createStyles({
-        table: {
-            minWidth: 580,
-        },
-        icon: {
-            width: 25,
-            height: 25,
-            borderRadius: 30,
-        }
-    }),
-);
+export const CryptoTable = ({allCoins, classes}: { allCoins: CoinsType[], classes: any }) => {
 
-export const CryptoTable = ({allCoins}: {allCoins: CoinsType[]}) => {
-    const classes = useStyles();
 
     return (
         <TableContainer component={Paper}>
