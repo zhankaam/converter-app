@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography} from "@material-ui/core";
+import {FormControl, InputLabel, MenuItem, Paper, Select, TextField} from "@material-ui/core";
 import {inject, observer} from "mobx-react";
 import {ConverterStore} from "../../store-mobX/converter-store";
 import {CurrenciesStore} from "../../store-mobX/currencies-store";
@@ -35,9 +35,6 @@ export const ConventerBlock = inject('currenciesStore','converterStore')(observe
                     </Select>
                 </FormControl>
             </div>
-            <Typography variant={"h5"} component={"h5"}>
-                77,81 Российский рубль
-            </Typography>
         </Paper>
     );
 }));

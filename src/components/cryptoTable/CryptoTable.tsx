@@ -6,21 +6,38 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
-import {CoinsType} from "../../types/types";
+import {CoinsType, TCoinDiff} from "../../types/types";
 import {inject, observer} from "mobx-react";
 import {CurrenciesStore} from "../../store-mobX/currencies-store";
+import {ConverterStore} from "../../store-mobX/converter-store";
 
-export const CryptoTable = inject('currenciesStore')(observer(({classes,currenciesStore}: {classes: any,currenciesStore?: CurrenciesStore }) => {
 
-    const allCoins:CoinsType[] = currenciesStore!.getAllCoins;
+export const CryptoTable = inject('currenciesStore', 'converterStore')(observer(({
+                                                                                     classes,
+                                                                                     currenciesStore,
+                                                                                     converterStore
+                                                                                 }: { classes: any, currenciesStore?: CurrenciesStore, converterStore?: ConverterStore }) => {
+
+    const allCoins: CoinsType[] = currenciesStore!.getAllCoins;
+    const diffObj: TCoinDiff = currenciesStore!.getDiffObj
+
 
     useEffect(() => {
-        if(currenciesStore){
+        if (currenciesStore) {
             currenciesStore?.fetchAllCoins()
+            setInterval(() => {
+                currenciesStore.fetchAllCoins()
+            }, 30 * 1000)
         }
-    },[])
+    }, [])
 
-    console.log(allCoins)
+    const onClickRow = (coin: CoinsType) => {
+        if (converterStore) {
+            converterStore.setSelectedCoin(coin);
+        }
+    }
+
+
     return (
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
@@ -36,14 +53,19 @@ export const CryptoTable = inject('currenciesStore')(observer(({classes,currenci
                 <TableBody>
                     {!allCoins.length
                         ? 'Loading...'
-                        : allCoins?.map((coin) => (
-                            <TableRow key={coin.name}>
+                        : allCoins?.map((coin: CoinsType) => (
+                            <TableRow
+                                onClick={() => onClickRow(coin)}
+                                className={classes.rowCurrency}
+                                hover
+                                key={coin.name}>
                                 <TableCell component="th" scope="row">
                                     <img className={classes.icon} src={coin.imageUrl} alt={"try again later"}/>
                                 </TableCell>
                                 <TableCell align="left">{coin.name}</TableCell>
                                 <TableCell align="left">{coin.fullName}</TableCell>
-                                <TableCell align="left">${coin.price}</TableCell>
+                                <TableCell align="left"
+                                           className={diffObj[coin.name] && classes[`${diffObj[coin.name]}Column`]}>${coin.price}</TableCell>
                                 <TableCell align="left">${coin.volume24Hour}</TableCell>
                             </TableRow>
                         ))}

@@ -6,3 +6,5 @@ export type CoinsType = {
     volume24Hour: number
 }
 
+export type TCoinDiff = {[key: string]: string}
+

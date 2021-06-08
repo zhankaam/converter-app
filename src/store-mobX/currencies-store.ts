@@ -1,19 +1,36 @@
 import {action, computed, observable} from "mobx";
-import {CoinsType} from "../types/types";
+import {CoinsType, TCoinDiff} from "../types/types";
 import axios from "axios";
 
 
 export class CurrenciesStore {
     @observable public allCoins: CoinsType[] = [];
+    @observable public diffObj: TCoinDiff = {};
 
     @computed
     get getAllCoins() {
         return this.allCoins
     }
 
+   @computed
+    get getDiffObj() {
+        return this.diffObj
+    }
+
     @action
     setAllCoins(allCoins: CoinsType[]): void {
-        this.allCoins = allCoins
+        this.diffObj = this.diffCurrencies(this.allCoins,allCoins).reduce(
+            (initObj:TCoinDiff,obj:CoinsType) => {
+            const newObj: CoinsType = allCoins.find(o => o.name === obj.name)!;
+            const oldObj: CoinsType = this.allCoins.find(itemObj => itemObj.name === newObj.name)!;
+            const color: string = newObj.price === oldObj.price
+                ? ''
+                : newObj.price > oldObj.price ? 'green' : 'red'
+
+            initObj[newObj.name] = color
+
+            return initObj
+        },{})
     }
 
     @action
@@ -29,6 +46,16 @@ export class CurrenciesStore {
             }
             return obj
         })
-       this.allCoins = coins
+       this.setAllCoins(coins)
     }
+
+     diffCurrencies(arr1: CoinsType[], arr2: CoinsType[]) {
+        return arr1.filter((obj, index) => {
+            if (obj.price !== arr2[index].price) {
+                return true
+            }
+            return false
+        })
+    }
+
 }
